@@ -89,6 +89,7 @@ Currently *cglm* uses default clip space configuration (-1, 1) for camera functi
 - curves
 - curve interpolation helpers (S*M*C, deCasteljau...)
 - helpers to convert cglm types to Apple's simd library to pass cglm types to Metal GL without packing them on both sides
+- ray intersection helpers
 - and others...
 
 <hr />
@@ -147,6 +148,38 @@ Struct functions generally take their parameters as *values* and *return* their 
 The types used are actually unions that allow access to the same data multiple ways. One of those ways involves anonymous structures, available since C11. MSVC also supports it for earlier C versions out of the box and GCC/Clang do if you enable `-fms-extensions`. To explicitly enable these anonymous structures, `#define CGLM_USE_ANONYMOUS_STRUCT` to `1`, to disable them, to `0`. For backward compatibility, you can also `#define CGLM_NO_ANONYMOUS_STRUCT` (value is irrelevant) to disable them. If you don't specify explicitly, cglm will do a best guess based on your compiler and the C version you're using.
 
 ## Build
+
+### CMake (All platforms)
+```bash
+$ mkdir build
+$ cd build
+$ cmake .. # [Optional] -DCGLM_SHARED=ON
+$ make
+$ sudo make install # [Optional]
+```
+
+##### Cmake options with Defaults:
+
+```CMake
+option(CGLM_SHARED "Shared build" ON)
+option(CGLM_STATIC "Static build" OFF)
+option(CGLM_USE_C99 "" OFF) # C11 
+option(CGLM_USE_TEST "Enable Tests" OFF) # for make check - make test
+```
+
+#### Use with your CMake project
+* Example:
+```cmake
+cmake_minimum_required(VERSION 3.8.2)
+
+project(<Your Project Name>)
+
+add_executable(${PROJECT_NAME} src/main.c)
+target_link_libraries(${LIBRARY_NAME} PRIVATE
+  cglm)
+
+add_subdirectory(external/cglm/)
+```
 
 ### Unix (Autotools)
 
